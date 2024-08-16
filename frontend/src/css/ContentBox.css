@@ -1,0 +1,11 @@
+.content-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+    
+.image-container { grid-area: 1 / 1 / 3 / 2; }
+.title-container { grid-area: 1 / 2 / 2 / 3; }
+.button-container { grid-area: 2 / 2 / 3 / 3; }
