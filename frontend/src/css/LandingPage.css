@@ -1,26 +1,70 @@
-.banner-container {
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+
+.header-container {
     background-color: #A2A2A2;
-    height: 265px;
-    width: 100%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
-.banner-text {
+.heading {
     color: white;
-    font-size: 50px;
+    font-family:"Paytone One", sans-serif;
+    font-size: 25px;
+    text-align: center;
+    letter-spacing: 2px;
 }
 
-.title-text {
-    color: white;
-    font-size: 70px;
-    margin: auto;
-}
-
-.second-title-container {
+/* ---Landing body css--- */
+.main-content {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.left-card-container, .right-card-container {
+    margin: 3rem;
+}
+
+.info-card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    background-color: #729CA2;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.img-container {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.action-container {
+    grid-area: 1 / 2 / 2 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    color: white;
+}
+
+.info-card button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-family: "Paytone One", sans-serif;
+    color: #FF893B;
+    font-size: 25px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.info-card button:hover {
+    border: none;
+    color: #465461;
+    background-color: #FF893B;
+    border-radius: 5px;
 }
