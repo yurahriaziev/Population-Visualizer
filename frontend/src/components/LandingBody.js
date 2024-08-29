@@ -33,7 +33,7 @@ export default function LandingBody({handleRouteChange}) {
                         <p>A site where country research is done simply</p>
                     </div>
                     <div className="info-btn">
-                        <button>Start Creating</button>
+                        <button onClick={() => handleRouteChange('create')}>Start Creating</button>
                     </div>
                 </div>
             </div>

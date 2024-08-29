@@ -41,6 +41,8 @@
     padding: 3rem 3rem 3rem 0;
     border-radius: 20px;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    margin-right: 5rem;
+    margin-left: 5rem;
 }
 
 .img-container {
