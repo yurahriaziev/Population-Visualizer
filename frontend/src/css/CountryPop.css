@@ -1,0 +1,26 @@
+.population-page {
+    background-color: aliceblue;
+    height: 100vh;
+}
+
+/* ---navbar css--- */
+.navbar {
+    background-color: #729CA2;
+    display: flex;
+}
+
+.navbar-left {
+    padding: 1rem 0 1rem 2rem;
+}
+
+.navbar-left button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    color: #D9D9D9;
+}
+
+.navbar-left button:hover {
+    color: #FF893B;
+}

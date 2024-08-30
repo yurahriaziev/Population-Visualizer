@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import CountryPopNav from "../components/CountryPopNav";
+import "../css/CountryPop.css"
+import { useNavigate } from "react-router-dom";
+import CountryPopBody from "../components/CountryPopBody";
 
 export default function CountryPop() {
-    const [message, setMessage] = useState({})
+    const [message, setMessage] = useState()
     const [countryName, setCountryName] = useState('')
-   
+    // const [error, setError] = useState('')
+
+    const navigate = useNavigate()
+    const handleRouteChange = (route) => {
+        navigate(route)
+    }
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+
         const toSend = {
             country: countryName
         }
@@ -23,6 +33,7 @@ export default function CountryPop() {
         if (response.ok) {
             const message = await response.json()
             setMessage(message)
+            setCountryName(toSend.country)
             // success
         } else {
             const error = await response.json()
@@ -31,15 +42,9 @@ export default function CountryPop() {
         }
     }
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                {message ? (
-                    <h1>{message.message}</h1>
-                ) : (
-                    <h1>Enter country name</h1>
-                )}
-                <input type="text" id="countryName" value={countryName} placeholder="Enter Country" onChange={(e) => setCountryName(e.target.value)}/>
-            </form>
+        <div className="population-page">
+            <CountryPopNav handleRouteChange={handleRouteChange}/>
+            <CountryPopBody handleSubmit={handleSubmit} message={message} countryName={countryName} setCountryName={setCountryName}/>
         </div>
     )
 }
