@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import React, { useEffect, useState } from "react";
+import { MapContainer, Polygon, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import "../css/CountryPop.css"
 
@@ -12,16 +12,27 @@ function UpdateMapCenter({center}) {
     }, [map, center])
 }
 
-export default function CountryPopMap({cData}) {
+export default function CountryPopMap({cData, submitted}) {
     console.log('here', cData)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (cData) {
+            setLoading(false)
+        } else {
+            setLoading(true)
+        }
+    }, [cData])
+
+
     return (
         <>
-            {cData && cData.country_name ? (
+            {cData && cData.countryName ? (
                 <div className="main-container">
                     <MapContainer
                         className="leaflet-container"
                         center={cData.centerCoords}
-                        zoom={6}
+                        zoom={5}
                         scrollWheelZoom={true}
                         key={cData.centerCoords}
                     >
@@ -32,9 +43,13 @@ export default function CountryPopMap({cData}) {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         <UpdateMapCenter center={cData.centerCoords}/>
+                        {/* Enter polygon here */}
+                        <Polygon positions={cData.positions} color="blue"/>
                     </MapContainer>
                 </div>
 
+            ) : loading && submitted ? (
+                <h2>Loading...</h2>
             ) : (
                 <h2>Choose country</h2>
             )}

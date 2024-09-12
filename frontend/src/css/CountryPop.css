@@ -119,7 +119,7 @@
 /* css for country dropdown menu */
 .dropdown-menu {
     position: absolute;
-    max-height: 200px;
+    /* max-height: 200px; */
     overflow-y: auto;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -144,6 +144,11 @@
 .leaflet-container {
     height: 100%;
     width: 100%;
+}
+
+/* ---country body info css */
+.cib-body {
+    background-color: #ff4d4d;
 }
 
 /* responsiveness of population body */

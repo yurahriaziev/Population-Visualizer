@@ -36,16 +36,17 @@ export default function CountryPop() {
 
             if (response.ok) {
                 const data = await response.json()
-                // console.log(data)
+                console.log(data)
                 // console.log(data.data.centerCoords)
                 setMessage(data.message)
                 setCountryName(toSend.country);
-                
                 setCountryData(data) 
+                setError('')
             } else {
                 const errorData = await response.json();
-                setError(errorData.message || 'An error occurred')
-                console.log(errorData)
+                // console.log(errorData)
+                setError(errorData.error || 'An error occurred')
+                return
             }
         } catch (err) {
             setError('Network error: Unable to reach the server')

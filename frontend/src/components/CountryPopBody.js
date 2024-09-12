@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "../css/CountryPop.css"
 import CountryPopMap from "./CountryPopMap";
+import CountryInfoBody from "./CountryInfoBody";
 
 export default function CountryPopBody( props ) {
     const {handleSubmit, message, countryName, setCountryName, countryList, countryData} = props
     const [filterCountries, setFilterCountries] = useState([])
     const [showDropdown, setShowDropdown] = useState(false)
+    const [submitted, setSubmitted] = useState(false)
 
     const handleInput = (e) => {
         const input = e.target.value
@@ -28,7 +30,8 @@ export default function CountryPopBody( props ) {
         setCountryName(country)
         setShowDropdown(false)
     }
-    console.log(countryData)
+
+    // console.log(countryData)
     return (
         <div className="population-body">
             <div className="parameters-container">
@@ -40,7 +43,7 @@ export default function CountryPopBody( props ) {
                 <div className="input-container">
                     <form onSubmit={handleSubmit}>
                         <input className="country-name-input" type="text" id="countryName" value={countryName} placeholder="Enter Country" onChange={handleInput} autoComplete="off"/>
-                        <button className="submit-btn" type="submit">Submit</button>
+                        <button className="submit-btn" type="submit" onClick={() => setSubmitted(true)}>Submit</button>
                         {showDropdown && (
                             <div className="dropdown-menu">
                                 {filterCountries.map((country, index) => (
@@ -52,10 +55,13 @@ export default function CountryPopBody( props ) {
                         )}
                     </form>
                 </div>
+                <CountryInfoBody countryData={countryData.data}/>                
             </div>
             <div className="map-container">
-                {countryData && (
-                    <CountryPopMap cData={countryData.data}/>
+                {countryData ? (
+                    <CountryPopMap cData={countryData.data} submitted={submitted}/>
+                ) : (
+                    <h2>Choose country</h2>
                 )}
             </div>
         </div>
