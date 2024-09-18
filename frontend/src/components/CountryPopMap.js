@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, Polygon, TileLayer, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import "../css/CountryPop.css"
 
@@ -36,15 +36,12 @@ export default function CountryPopMap({cData, submitted}) {
                         scrollWheelZoom={true}
                         key={cData.centerCoords}
                     >
-                        
-
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
+                        { cData.geoData && <GeoJSON data={cData.geoData} />}
                         <UpdateMapCenter center={cData.centerCoords}/>
-                        {/* Enter polygon here */}
-                        <Polygon positions={cData.positions} color="blue"/>
                     </MapContainer>
                 </div>
 
