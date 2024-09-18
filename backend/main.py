@@ -25,10 +25,6 @@ def get_country_list():
         for country in country_data:
             list_of_names.append(country.get('name', {}).get('common', 'Undefined'))
 
-        # print(f'List of countries')
-        # for i in list_of_names:
-        #     print(f'--> {i}')
-
         return jsonify({'names':list_of_names})
     except Exception as e:
         return jsonify({'message':f'{e}'}), 400
@@ -59,15 +55,7 @@ def population():
                 'error':'Invalid input'
                             }), 400
     
-        # testing
         print(f'Country name received {country_name}')
-        # print(f'{country_name} data:')
-        # for i in country_data['name']:
-        #     print(f'--> {country_data['name'][i]}')
-
-        # for i in country_data:
-        #     print(f'--> {i}')
-
         '''
         Creating and sending data to the front end
         1. Basic data: population, capital, area
@@ -79,7 +67,7 @@ def population():
             population = country_data['population']
             capital = country_data['capital'][0]
             area = country_data['area']
-            positions = bounds(country_name)
+            geo_data = static_bounds(country_name)
 
         # testing
         print(country_data['maps']['openStreetMaps'])
@@ -88,7 +76,7 @@ def population():
         print(area)
         print(country_data['coatOfArms'])
         print(country_data['flags'])
-        
+        static_bounds(country_name)
 
         return jsonify({
             'message':f"Country received: {country_name}",
@@ -99,83 +87,39 @@ def population():
                 'population':population,
                 'area':area,
                 'flagPng':'',
-                'positions':positions
+                'geoData':geo_data
             }
             }), 201
 
     except Exception as e:
         return jsonify({'message':f'{e}'}), 400
     
-def bounds(country_name):
-    api_url = 'https://overpass-api.de/api/interpreter'
-    query = f"""
-        [out:json];
-        relation["boundary"="administrative"]["admin_level"="2"]["name:en"={country_name}];
-        out body;
-        >;
-        out geom;
-    """
 
+'''
+    Takes in 'country name' as parameter to return that country's geo json data
+    Uses data from 'Natural Earth'
+'''
+def static_bounds(country_name):
     try:
-        response = requests.get(api_url, data={'data':query})
-        if response.status_code == 200:
-            data = response.json()
-            if not data.get('elements'):
-                raise print_err(
-                    ValueError(f'No boundary found for {country_name}')
-                )
-            
-            print(f'\n\nGEO json for {country_name}')
-            # testing
-            bounds_data = []
 
-            for element in data.get('elements', []):
-                if element['type'] == 'way':
-                    geometry = element.get('geometry', [])
-                    if geometry:
-                        coords = [(point['lat'], point['lon']) for point in geometry]
-                        bounds_data.append(coords)
-                        # bounds_data.append({
-                        #     'name':country_name,
-                        #     'type':element.get('type'),
-                        #     'geometry':coords
-                        # })
-
-            # for i in bounds_data:
-            #     print(i)
-            print(bounds_data)
-            return bounds_data
-            
-        elif response.status_code == 404:
-            print_err('Coutry not found in Overpass API')
+        if country_name == 'Ukraine':
+            shp_path = 'static/ukraine-with-crimea_1691.geojson'
+            country = gpd.read_file(shp_path)
         else:
-            raise print_err(
-                    Exception(f'General error: {response.status_code} - {response.reason}')
-                )
-    
+            shp_path = 'static/ne_10m_admin_0_countries.shp'
+            gdf = gpd.read_file(shp_path)
+            country = gdf[gdf['NAME'] == country_name]
+
+        if country.empty:
+            return jsonify({'message':'Country not found'})
+
+        geojson = country.to_json()
+
+        print('returning geojson')
+        return json.loads(geojson)
     except Exception as e:
-        return jsonify({"message":f'{e}'})
+        print_err(e)
 
-
-
-'''This is for simulation'''
-# # connect to openstreet api --> overpass api
-# api_url = 'https://overpass-api.de/api/interpreter'
-# query = f"""
-#     [out:json];
-#     area["name"="{country_name}"]->.searchArea;
-#     (
-#         relation["boundary"="administrative"]["admin_level"="2"](area.searchArea);
-#     );
-#     out body;
-#     >;
-#     out skel qt;
-# """
-
-# response = requests.post(api_url, data={'data': query})
-# if response.status_code == 200:
-#     data = response.json()
-#     print(json.dumps(data, indent=2))
 
 if __name__ == "__main__":
     app.run(debug=True)
